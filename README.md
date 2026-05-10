@@ -65,29 +65,6 @@ Arguments:
 
 - `sessionID`: OpenCode session id such as `ses_...`
 
-## Development
-
-```bash
-bun install
-bun run typecheck
-bun test
-bun run build
-bun run check:package
-```
-
-## Publishing
-
-Publishing is intentionally guarded by `prepublishOnly`, which runs tests,
-typechecking, build, and package verification before `npm publish` can proceed.
-
-```bash
-npm publish --access public
-```
-
-GitHub releases can publish through `.github/workflows/publish.yml` when the
-repository has an `NPM_TOKEN` secret with publish permission. The workflow runs
-the same package verification gate before `npm publish --provenance`.
-
 ## License
 
 MIT
