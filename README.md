@@ -15,13 +15,13 @@ session history.
 Install as a remote OpenCode plugin after the package is published to npm:
 
 ```bash
-opencode plugin opencode-session-manager@latest
+opencode plugin @iamabigartist/opencode-session-manager@latest
 ```
 
 For global installation:
 
 ```bash
-opencode plugin opencode-session-manager@latest --global
+opencode plugin @iamabigartist/opencode-session-manager@latest --global
 ```
 
 OpenCode resolves the plugin through the package `./server` export.
