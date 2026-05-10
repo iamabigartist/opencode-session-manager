@@ -52,7 +52,19 @@ describe("package publishing metadata", () => {
     expect(autoPublishWorkflow).toContain("workflow_dispatch:")
     expect(autoPublishWorkflow).toContain("version:")
     expect(autoPublishWorkflow).toContain("required: true")
+    expect(autoPublishWorkflow).toContain("persist-credentials: false")
+    expect(autoPublishWorkflow).toContain(
+      'expected_name="@ratteeth1/opencode-session-manager"',
+    )
+    expect(autoPublishWorkflow).toContain('[[ ! "$version" =~')
     expect(autoPublishWorkflow).toContain("skip_publish")
+    expect(autoPublishWorkflow).toContain(
+      "npm publish --access public --provenance --ignore-scripts",
+    )
+    expect(autoPublishWorkflow).toContain("GH_TOKEN: ${{ github.token }}")
+    expect(autoPublishWorkflow).toContain(
+      "http.https://github.com/.extraheader",
+    )
 
     const verifyPackage = autoPublishWorkflow.indexOf("name: Verify package")
     const createTag = autoPublishWorkflow.indexOf("name: Create and push tag")

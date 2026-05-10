@@ -31,6 +31,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
+          persist-credentials: false
 
       - name: Setup Bun
         uses: oven-sh/setup-bun@v2
@@ -51,6 +52,17 @@ jobs:
         run: |
           name="$(node -p "require('./package.json').name")"
           version="$(node -p "require('./package.json').version")"
+          expected_name="@ratteeth1/opencode-session-manager"
+
+          if [[ "$name" != "$expected_name" ]]; then
+            echo "package.json name '$name' does not match expected package '$expected_name'."
+            exit 1
+          fi
+
+          if [[ ! "$version" =~ ^[0-9]+\.[0-9]+\.[0-9]+(-[0-9A-Za-z.-]+)?$ ]]; then
+            echo "package.json version '$version' is not a supported semver release version."
+            exit 1
+          fi
 
           if [[ -n "$REQUESTED_VERSION" && "$REQUESTED_VERSION" != "$version" ]]; then
             echo "workflow_dispatch version '$REQUESTED_VERSION' does not match package.json version '$version'."
@@ -121,15 +133,18 @@ jobs:
       - name: Create and push tag
         if: steps.state.outputs.skip_tag != 'true'
         shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git tag -a "${{ steps.pkg.outputs.tag }}" -m "${{ steps.pkg.outputs.tag }}"
-          git push origin "${{ steps.pkg.outputs.tag }}"
+          basic="$(printf 'x-access-token:%s' "$GH_TOKEN" | base64 -w0)"
+          git -c "http.https://github.com/.extraheader=AUTHORIZATION: basic $basic" push origin "${{ steps.pkg.outputs.tag }}"
 
       - name: Publish to npm
         if: steps.state.outputs.skip_publish != 'true'
-        run: npm publish --access public --provenance
+        run: npm publish --access public --provenance --ignore-scripts
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
