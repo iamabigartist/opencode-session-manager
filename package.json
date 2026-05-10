@@ -1,0 +1,63 @@
+{
+  "name": "opencode-session-manager",
+  "version": "0.1.0",
+  "type": "module",
+  "description": "OpenCode plugin for querying and managing session history",
+  "license": "MIT",
+  "author": "",
+  "homepage": "https://github.com/opencode-session-manager/opencode-session-manager#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/opencode-session-manager/opencode-session-manager.git"
+  },
+  "bugs": {
+    "url": "https://github.com/opencode-session-manager/opencode-session-manager/issues"
+  },
+  "keywords": [
+    "opencode",
+    "opencode-plugin",
+    "plugin",
+    "session",
+    "session-history",
+    "productivity"
+  ],
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./server": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist/",
+    "README.md",
+    "LICENSE"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "build": "tsup && tsc --emitDeclarationOnly",
+    "check": "bun run typecheck && bun test && bun run build",
+    "check:package": "bun run check && bun scripts/verify-package.ts",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "prepublishOnly": "bun run check:package",
+    "test": "bun test",
+    "typecheck": "tsc --project tsconfig.typecheck.json"
+  },
+  "dependencies": {
+    "@opencode-ai/plugin": "^1.14.31"
+  },
+  "devDependencies": {
+    "bun-types": "latest",
+    "prettier": "^3.6.2",
+    "tsup": "^8.5.0",
+    "typescript": "^5.9.3"
+  }
+}
