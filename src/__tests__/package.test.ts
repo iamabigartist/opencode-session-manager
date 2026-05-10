@@ -38,7 +38,7 @@ describe("package publishing metadata", () => {
     expect(await Bun.file(".github/workflows/pr-checks.yml").exists()).toBe(
       true,
     )
-    expect(await Bun.file(".github/workflows/publish.yml").exists()).toBe(true)
+    expect(await Bun.file(".github/workflows/auto-publish.yml").exists()).toBe(true)
     expect(await Bun.file("README.md").exists()).toBe(true)
     expect(await Bun.file("LICENSE").exists()).toBe(true)
   })
