@@ -2,6 +2,9 @@ import { describe, expect, test } from "bun:test"
 
 const packageJson = await Bun.file("package.json").json()
 const tsconfig = await Bun.file("tsconfig.json").json()
+const autoPublishWorkflow = await Bun.file(
+  ".github/workflows/auto-publish.yml",
+).text()
 
 describe("package publishing metadata", () => {
   test("declares built ESM entrypoints for npm and OpenCode", () => {
@@ -43,5 +46,24 @@ describe("package publishing metadata", () => {
     )
     expect(await Bun.file("README.md").exists()).toBe(true)
     expect(await Bun.file("LICENSE").exists()).toBe(true)
+  })
+
+  test("publishes only after a matching git tag is pushed", () => {
+    expect(autoPublishWorkflow).toContain("workflow_dispatch:")
+    expect(autoPublishWorkflow).toContain("version:")
+    expect(autoPublishWorkflow).toContain("required: true")
+    expect(autoPublishWorkflow).toContain("skip_publish")
+
+    const verifyPackage = autoPublishWorkflow.indexOf("name: Verify package")
+    const createTag = autoPublishWorkflow.indexOf("name: Create and push tag")
+    const publishNpm = autoPublishWorkflow.indexOf("name: Publish to npm")
+    const createRelease = autoPublishWorkflow.indexOf(
+      "name: Create GitHub Release",
+    )
+
+    expect(verifyPackage).toBeGreaterThan(-1)
+    expect(createTag).toBeGreaterThan(verifyPackage)
+    expect(publishNpm).toBeGreaterThan(createTag)
+    expect(createRelease).toBeGreaterThan(publishNpm)
   })
 })
