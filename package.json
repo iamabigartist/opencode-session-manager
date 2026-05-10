@@ -1,5 +1,5 @@
 {
-  "name": "@iamabigartist/opencode-session-manager",
+  "name": "@ratteeth1/opencode-session-manager",
   "version": "0.1.0",
   "type": "module",
   "description": "OpenCode plugin for querying and managing session history",
