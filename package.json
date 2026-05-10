@@ -5,13 +5,13 @@
   "description": "OpenCode plugin for querying and managing session history",
   "license": "MIT",
   "author": "",
-  "homepage": "https://github.com/opencode-session-manager/opencode-session-manager#readme",
+  "homepage": "https://github.com/iamabigartist/opencode-session-manager#readme",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/opencode-session-manager/opencode-session-manager.git"
+    "url": "git+https://github.com/iamabigartist/opencode-session-manager.git"
   },
   "bugs": {
-    "url": "https://github.com/opencode-session-manager/opencode-session-manager/issues"
+    "url": "https://github.com/iamabigartist/opencode-session-manager/issues"
   },
   "keywords": [
     "opencode",
