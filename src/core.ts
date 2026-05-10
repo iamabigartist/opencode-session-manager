@@ -9,10 +9,7 @@ const SESSION_ID_RE = /^ses_\S+$/
 export function validateSessionID(raw: string): string {
   const trimmed = raw.trim()
   if (!trimmed.startsWith("ses_")) {
-    throw new SessionError(
-      'Session ID must start with "ses_"',
-      "invalid_id",
-    )
+    throw new SessionError('Session ID must start with "ses_"', "invalid_id")
   }
   if (trimmed.length === 4) {
     throw new SessionError(
@@ -22,10 +19,7 @@ export function validateSessionID(raw: string): string {
   }
   // Allow sub-session suffix: ses_abc123/1
   if (!SESSION_ID_RE.test(trimmed.split("/")[0])) {
-    throw new SessionError(
-      'Session ID must start with "ses_"',
-      "invalid_id",
-    )
+    throw new SessionError('Session ID must start with "ses_"', "invalid_id")
   }
   return trimmed
 }
@@ -64,15 +58,11 @@ export function formatSessionList(
   for (const s of sessions) {
     const title = s.title ?? "-"
     const displayTitle =
-      title.length > TITLE_MAX
-        ? title.slice(0, TITLE_MAX - 3) + "..."
-        : title
+      title.length > TITLE_MAX ? title.slice(0, TITLE_MAX - 3) + "..." : title
     const dir = (s.directory ?? "-").replace(/\\/g, "\\\\")
     const updated = formatTimestamp(s.timeUpdated)
     const msgs = s.messageCount !== undefined ? String(s.messageCount) : "-"
-    lines.push(
-      `| ${s.id} | ${displayTitle} | ${dir} | ${updated} | ${msgs} |`,
-    )
+    lines.push(`| ${s.id} | ${displayTitle} | ${dir} | ${updated} | ${msgs} |`)
   }
 
   return lines.join("\n")
@@ -108,9 +98,7 @@ export function summarizeSessionContent(
   // Find latest user prompt and latest assistant response
   const latestUser = userMsgs.length > 0 ? userMsgs[userMsgs.length - 1] : null
   const latestAssistant =
-    assistantMsgs.length > 0
-      ? assistantMsgs[assistantMsgs.length - 1]
-      : null
+    assistantMsgs.length > 0 ? assistantMsgs[assistantMsgs.length - 1] : null
 
   const lines: string[] = []
   lines.push(`## Session \`${info.id}\``)
@@ -216,7 +204,9 @@ export function renderFullSession(
 function formatTimestamp(ms: number | undefined): string {
   if (ms === undefined) return "-"
   const d = new Date(ms)
-  return isNaN(d.getTime()) ? "-" : d.toISOString().replace("T", " ").slice(0, 19)
+  return isNaN(d.getTime())
+    ? "-"
+    : d.toISOString().replace("T", " ").slice(0, 19)
 }
 
 function clipText(text: string, maxLen = TEXT_CLIP): string {

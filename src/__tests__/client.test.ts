@@ -35,20 +35,16 @@ function toSdkSession(s: SessionInfo) {
 function fakeSdk() {
   return {
     session: {
-      list: mock(
-        async (input?: { query?: Record<string, string> }) => {
-          let result = sessionsJson.map(toSdkSession)
-          if (input?.query?.search) {
-            const q = input.query.search.toLowerCase()
-            result = result.filter(
-              (s) => s.title?.toLowerCase().includes(q),
-            )
-          }
-          if (input?.query?.limit)
-            result = result.slice(0, Number(input.query.limit))
-          return { data: result }
-        },
-      ),
+      list: mock(async (input?: { query?: Record<string, string> }) => {
+        let result = sessionsJson.map(toSdkSession)
+        if (input?.query?.search) {
+          const q = input.query.search.toLowerCase()
+          result = result.filter((s) => s.title?.toLowerCase().includes(q))
+        }
+        if (input?.query?.limit)
+          result = result.slice(0, Number(input.query.limit))
+        return { data: result }
+      }),
       get: mock(async (input: { path: { id: string } }) => {
         const s = sessionsJson.find((x) => x.id === input.path.id)
         if (!s) throw new Error("not found")

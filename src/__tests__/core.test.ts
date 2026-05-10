@@ -76,7 +76,8 @@ describe("formatSessionList", () => {
     },
     {
       id: "ses_ccc",
-      title: "A very long title that should be truncated because it exceeds the maximum length allowed in table format output",
+      title:
+        "A very long title that should be truncated because it exceeds the maximum length allowed in table format output",
       directory: "/tmp",
       timeCreated: 10,
       timeUpdated: 100,
@@ -177,13 +178,30 @@ describe("summarizeSessionContent", () => {
   ]
 
   const parts: Record<string, PartInfo[]> = {
-    msg_1: [{ id: "p1", messageID: "msg_1", type: "text", text: "Hello, can you help?" }],
+    msg_1: [
+      {
+        id: "p1",
+        messageID: "msg_1",
+        type: "text",
+        text: "Hello, can you help?",
+      },
+    ],
     msg_2: [
       { id: "p2", messageID: "msg_2", type: "text", text: "Of course!" },
-      { id: "p3", messageID: "msg_2", type: "tool", toolName: "read", toolID: "t1" },
+      {
+        id: "p3",
+        messageID: "msg_2",
+        type: "tool",
+        toolName: "read",
+        toolID: "t1",
+      },
     ],
-    msg_3: [{ id: "p4", messageID: "msg_3", type: "text", text: "I need more help." }],
-    msg_4: [{ id: "p5", messageID: "msg_4", type: "text", text: "Sure thing." }],
+    msg_3: [
+      { id: "p4", messageID: "msg_3", type: "text", text: "I need more help." },
+    ],
+    msg_4: [
+      { id: "p5", messageID: "msg_4", type: "text", text: "Sure thing." },
+    ],
   }
 
   test("summarizes session with metadata and message counts", () => {
@@ -213,11 +231,7 @@ describe("summarizeSessionContent", () => {
     const partsWithLong: Record<string, PartInfo[]> = {
       msg_1: [{ id: "p1", messageID: "msg_1", type: "text", text: longText }],
     }
-    const result = summarizeSessionContent(
-      info,
-      [messages[0]],
-      partsWithLong,
-    )
+    const result = summarizeSessionContent(info, [messages[0]], partsWithLong)
     // Should be clipped to under 2000 chars in output
     const textLines = result.split("\n")
     const longestLine = Math.max(...textLines.map((l) => l.length))
@@ -225,11 +239,7 @@ describe("summarizeSessionContent", () => {
   })
 
   test("handles empty messages gracefully", () => {
-    const result = summarizeSessionContent(
-      info,
-      [],
-      {},
-    )
+    const result = summarizeSessionContent(info, [], {})
     expect(result).toContain("ses_abc")
     expect(result.includes("Messages")).toBe(true)
   })
@@ -238,11 +248,7 @@ describe("summarizeSessionContent", () => {
     const partsNoText: Record<string, PartInfo[]> = {
       msg_1: [{ id: "p1", messageID: "msg_1", type: "tool", toolName: "bash" }],
     }
-    const result = summarizeSessionContent(
-      info,
-      [messages[0]],
-      partsNoText,
-    )
+    const result = summarizeSessionContent(info, [messages[0]], partsNoText)
     // Should not throw
     expect(result).toContain("ses_abc")
   })
@@ -289,10 +295,18 @@ describe("renderFullSession", () => {
   ]
 
   const parts: Record<string, PartInfo[]> = {
-    msg_a: [{ id: "pa1", messageID: "msg_a", type: "text", text: "What is 2+2?" }],
+    msg_a: [
+      { id: "pa1", messageID: "msg_a", type: "text", text: "What is 2+2?" },
+    ],
     msg_b: [
       { id: "pb1", messageID: "msg_b", type: "text", text: "2+2 equals 4." },
-      { id: "pb2", messageID: "msg_b", type: "tool", toolName: "bash", toolID: "t2" },
+      {
+        id: "pb2",
+        messageID: "msg_b",
+        type: "tool",
+        toolName: "bash",
+        toolID: "t2",
+      },
     ],
   }
 

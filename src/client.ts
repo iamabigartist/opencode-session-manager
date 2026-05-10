@@ -1,4 +1,9 @@
-import type { MessageInfo, PartInfo, SessionClient, SessionInfo } from "./types.ts"
+import type {
+  MessageInfo,
+  PartInfo,
+  SessionClient,
+  SessionInfo,
+} from "./types.ts"
 
 // ---------------------------------------------------------------------------
 // SDK shape helpers – keep the runtime contract minimal and typed internally
@@ -19,9 +24,7 @@ function dataArray(result: unknown): Array<Record<string, unknown>> {
 }
 
 /** Unwrap `(result as Record).data` when it is a record, else return `null`. */
-function dataRecord(
-  result: unknown,
-): Record<string, unknown> | null {
+function dataRecord(result: unknown): Record<string, unknown> | null {
   const val = (result as Record<string, unknown>).data
   return val && typeof val === "object" && !Array.isArray(val)
     ? (val as Record<string, unknown>)
@@ -57,7 +60,8 @@ function toMessageInfo(
   sessionID: string,
 ): MessageInfo {
   const time = isRecord(raw.time) ? raw.time : null
-  const createdAt = numberOrUndefined(time?.created) ?? numberOrUndefined(raw.time)
+  const createdAt =
+    numberOrUndefined(time?.created) ?? numberOrUndefined(raw.time)
   const role: MessageInfo["role"] =
     String(raw.role ?? "user") === "assistant" ? "assistant" : "user"
   const agent = stringOrUndefined(raw.agent)
@@ -139,9 +143,7 @@ export function createClient(sdk: SdkLike): SessionClient {
       const out: Record<string, PartInfo[]> = {}
       for (const entry of dataArray(result)) {
         const info = isRecord(entry.info) ? entry.info : entry
-        const mid = String(
-          (info as Record<string, unknown>).id ?? "",
-        )
+        const mid = String((info as Record<string, unknown>).id ?? "")
         if (!requested.has(mid)) continue
 
         const parts = entry.parts

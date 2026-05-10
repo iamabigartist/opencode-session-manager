@@ -66,15 +66,18 @@ export interface SessionOpenArgs {
 
 /** Interface for fetching session data (HTTP / SDK client). */
 export interface SessionClient {
-  listSessions(args: { limit?: number; search?: string }): Promise<SessionInfo[]>
+  listSessions(args: {
+    limit?: number
+    search?: string
+  }): Promise<SessionInfo[]>
   getSession(sessionID: string): Promise<SessionInfo | null>
   getMessages(
     sessionID: string,
-    opts?: { limit?: number }
+    opts?: { limit?: number },
   ): Promise<MessageInfo[]>
   getParts(
     sessionID: string,
-    messageIDs: string[]
+    messageIDs: string[],
   ): Promise<Record<string, PartInfo[]>>
 }
 
@@ -87,7 +90,7 @@ export interface SessionOpener {
 export class SessionError extends Error {
   constructor(
     message: string,
-    public readonly code: "invalid_id" | "not_found" | "internal"
+    public readonly code: "invalid_id" | "not_found" | "internal",
   ) {
     super(message)
     this.name = "SessionError"

@@ -244,10 +244,7 @@ describe("session_read tool", () => {
     const opener = fakeOpener()
     const tools = createTools(client, opener)
 
-    const result = await tools.session_read.execute(
-      { sessionID: "bad" },
-      ctx,
-    )
+    const result = await tools.session_read.execute({ sessionID: "bad" }, ctx)
 
     expect(asString(result)).toContain("must start with")
   })
@@ -270,10 +267,7 @@ describe("session_read tool", () => {
     const opener = fakeOpener()
     const tools = createTools(client, opener)
 
-    const result = await tools.session_read.execute(
-      { sessionID: "ses_1" },
-      ctx,
-    )
+    const result = await tools.session_read.execute({ sessionID: "ses_1" }, ctx)
 
     const s = asString(result)
     expect(s).toContain("ses_1")
@@ -298,10 +292,7 @@ describe("session_open tool", () => {
     const opener = fakeOpener()
     const tools = createTools(client, opener)
 
-    const result = await tools.session_open.execute(
-      { sessionID: "ses_1" },
-      ctx,
-    )
+    const result = await tools.session_open.execute({ sessionID: "ses_1" }, ctx)
 
     const openMock = opener.open as ReturnType<typeof mock>
     expect(openMock).toHaveBeenCalledWith("ses_1")

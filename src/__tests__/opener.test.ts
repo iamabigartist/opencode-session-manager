@@ -9,13 +9,15 @@ afterEach(() => {
 
 describe("createOpener.open", () => {
   test("sends POST to /tui/select-session with JSON", async () => {
-    const fetchMock = mock(async (_input: RequestInfo | URL, _init?: RequestInit) => {
-      return {
-        ok: true,
-        status: 200,
-        json: async () => ({ success: true }),
-      } as Response
-    })
+    const fetchMock = mock(
+      async (_input: RequestInfo | URL, _init?: RequestInit) => {
+        return {
+          ok: true,
+          status: 200,
+          json: async () => ({ success: true }),
+        } as Response
+      },
+    )
     globalThis.fetch = fetchMock as unknown as typeof fetch
     const opener = createOpener(serverUrl)
 
