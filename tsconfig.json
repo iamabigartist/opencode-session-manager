@@ -7,11 +7,11 @@
     "types": ["bun-types"],
     "allowImportingTsExtensions": true,
     "declaration": true,
-    "declarationMap": true,
+    "declarationMap": false,
     "emitDeclarationOnly": true,
     "outDir": "./dist",
     "skipLibCheck": true
   },
   "include": ["src/**/*.ts"],
-  "exclude": ["dist", "node_modules"]
+  "exclude": ["dist", "node_modules", "src/__tests__/**"]
 }

@@ -2,6 +2,8 @@ import { describe, expect, test } from "bun:test"
 
 const packageJson = await Bun.file("package.json").json()
 const tsconfig = await Bun.file("tsconfig.json").json()
+const tsupConfig = await Bun.file("tsup.config.ts").text()
+const verifyPackageScript = await Bun.file("scripts/verify-package.ts").text()
 const autoPublishWorkflow = await Bun.file(
   ".github/workflows/auto-publish.yml",
 ).text()
@@ -32,9 +34,16 @@ describe("package publishing metadata", () => {
 
   test("generates declarations for the dist package", () => {
     expect(tsconfig.compilerOptions.declaration).toBe(true)
-    expect(tsconfig.compilerOptions.declarationMap).toBe(true)
+    expect(tsconfig.compilerOptions.declarationMap).toBe(false)
     expect(tsconfig.compilerOptions.outDir).toBe("./dist")
     expect(tsconfig.compilerOptions.noEmit).toBeUndefined()
+    expect(tsconfig.exclude).toContain("src/__tests__/**")
+    expect(tsupConfig).toContain("sourcemap: false")
+  })
+
+  test("rejects test declarations and sourcemaps from the npm package", () => {
+    expect(verifyPackageScript).toContain('"dist/__tests__/"')
+    expect(verifyPackageScript).toContain('".map"')
   })
 
   test("includes CI and npm publishing workflows", async () => {

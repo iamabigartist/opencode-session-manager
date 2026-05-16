@@ -45,9 +45,21 @@ for (const file of requiredFiles) {
 }
 
 const forbiddenPrefixes = ["src/", "scripts/", ".github/", "node_modules/"]
+const forbiddenDistPrefixes = ["dist/__tests__/"]
+const forbiddenSuffixes = [".map"]
+
 for (const file of files) {
-  const forbidden = forbiddenPrefixes.find((prefix) => file.startsWith(prefix))
+  const forbidden = [...forbiddenPrefixes, ...forbiddenDistPrefixes].find(
+    (prefix) => file.startsWith(prefix),
+  )
   if (forbidden) {
+    throw new Error(`npm pack output includes forbidden file: ${file}`)
+  }
+
+  const forbiddenSuffix = forbiddenSuffixes.find((suffix) =>
+    file.endsWith(suffix),
+  )
+  if (forbiddenSuffix) {
     throw new Error(`npm pack output includes forbidden file: ${file}`)
   }
 }
